@@ -80,7 +80,7 @@ main {
     border-radius: 0.3rem;
     display: grid;
     grid-template-columns:repeat(7, 1fr);
-    grid-template-rows: 3rem repeat(5, 1fr);
+    grid-template-rows: 3rem repeat(6, 1fr);
 
     background-color: #434343;
 }
@@ -100,6 +100,16 @@ main {
     margin-top: 0.5rem;
     margin-left: 0.5rem;
 }
+svg {
+    height: 20px;
+    width: 20px;
+    cursor: pointer;
+}
+
+svg:hover {
+    transform: scale(1.1); 
+}
+
 
 
 /* ======================

@@ -2,27 +2,37 @@
 document.addEventListener('DOMContentLoaded', ()=> {
 
 const tracker = new Calendar();
-const septemberFirst2025 = new Date(2025, 8, 1);
-console.log(septemberFirst2025);
-
-
 
 })
 
 class Calendar {
     constructor() {
+        this.prev = document.getElementById('prev');
+        this.next = document.getElementById('next');
+        this.h1 = document.querySelector('.h1')
+
         this.today = new Date;
         this.year = this.today.getFullYear();
         this.month = this.today.getMonth();
         this.day = this.today.getDay();
+        this.h1.innerHTML = `${new Date(this.year, this.month).toLocaleString('default', { month: 'long' })} ${this.year}`;
 
         this.container = document.querySelector('.calendar');
         this.monthYear = document.querySelector('.month-year');
         this.specificDay = document.querySelector('.days-container');
+        this.init();
         this.renderTopBar();
-        this.repeatFor(2025, 8);
+        this.repeatFor(this.year, this.month);
     
         
+    }
+    init() {
+        this.prev.addEventListener('click', ()=> {
+            this.update('prev')
+        })
+        this.next.addEventListener('click', ()=> {
+            this.update('next')
+        })
     }
     renderTopBar() {
         this.monday = document.createElement('div');
@@ -55,9 +65,32 @@ class Calendar {
         this.specificDay.appendChild(this.saturday);
         this.specificDay.appendChild(this.sunday);
     }
+    update(type) {
+    if (type === 'prev') {
+        if(this.month === 0) {
+            this.year--;
+            this.month = 11;
+        } else {
+            this.month--;
+        }
+    } else if (type === 'next') {
+        if(this.month === 11) {
+            this.year++;
+            this.month = 0;
+        } else {
+            this.month++;
+        }
+    }
+
+    this.specificDay.innerHTML = "";
+
+    this.h1.innerHTML = `${new Date(this.year, this.month).toLocaleString('default', { month: 'long' })} ${this.year}`;
+
+    this.renderTopBar();
+    this.repeatFor(this.year, this.month);
+}
     getFirstDayOfMonth(year, month) {
         let day = new Date(year, month, 1).getDay();
-        // convert Sunday=0 to 7
         return day === 0 ? 7 : day; 
     }
     getDaysInMonth(year, month) {
@@ -81,7 +114,7 @@ class Calendar {
         }
 
         const totalCells = startAt - 1 + days; 
-        const remaining = 35 - totalCells;
+        const remaining = (7 * 6) - totalCells;
         for (let i = 0; i < remaining; i++) {
             const empty = document.createElement('div');
             empty.classList.add('day', 'empty');
